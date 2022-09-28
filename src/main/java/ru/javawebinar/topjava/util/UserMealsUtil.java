@@ -33,8 +33,8 @@ public class UserMealsUtil {
         Map<LocalDate, Integer> dateAndCaloriesPerDay = new HashMap<>();
         return meals.stream()
                 .peek(x->dateAndCaloriesPerDay.merge(x.getDateTime().toLocalDate(),x.getCalories(),Integer::sum))
-                .sorted(Comparator.comparing(UserMeal::getDateTime))
                 .filter(x->TimeUtil.isBetweenHalfOpen(x.getDateTime().toLocalTime(),startTime,endTime))
+                .sorted(Comparator.comparing(UserMeal::getDateTime))
                 .map(x -> dateAndCaloriesPerDay.get(x.getDateTime().toLocalDate())>caloriesPerDay ? new UserMealWithExcess(x.getDateTime(), x.getDescription(), x.getCalories(), true) :
                         new UserMealWithExcess(x.getDateTime(), x.getDescription(), x.getCalories(), false))
                 .collect(Collectors.toList());
